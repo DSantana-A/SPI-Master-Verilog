@@ -1,0 +1,14 @@
+cat > .gitignore << 'EOF'
+# Icarus Verilog
+*.vcd
+*.vvp
+sim
+
+# Yosys
+*.dot
+*.png
+*.json
+
+# Mac
+.DS_Store
+EOF
