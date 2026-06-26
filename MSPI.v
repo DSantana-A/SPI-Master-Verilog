@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module MSPI #(parameter N =8, parameter NumSlaves = 1, parameter CPOL = 0)(
     input miso, clk, reset, enable,
     input [N-1:0] data,
@@ -58,7 +60,7 @@ always @(posedge clk ) begin
                     sclk <= CPOL;
                     state <= IDLE;
                 end
-                default: 
+                default:  ;
             endcase
 
     end
