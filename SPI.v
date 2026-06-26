@@ -1,7 +1,9 @@
-module MSPI #(parameter N =8)(
+module MSPI #(parameter N =8, parameter NumSlaves = 1, parameter CPOL = 0)(
     input miso, clk, reset, enable,
     input [N-1:0] data,
-    output reg mosi, sclk, cs, busy
+    input [$clog2(NumSlaves)-1:0] slave_sel,
+    output reg mosi, sclk, busy,
+    output reg [NumSlaves-1:0] cs
 );
     localparam  IDLE =  2'b00;
     localparam START = 2'b01;
@@ -14,7 +16,7 @@ reg [$clog2(N)-1:0] counter;
 
 always @(posedge clk ) begin
     if (reset) begin
-        sclk <=0;
+        sclk <=CPOL;
         mosi <=0;
         busy<=0;
         cs<=0;
@@ -33,7 +35,7 @@ always @(posedge clk ) begin
                     end
                 end 
                 START: begin
-                    cs <=1;
+                    cs <=1 << slave_sel;
                     shift_reg <= data;
                     state <= TRANSFER;
                 end 
@@ -53,7 +55,7 @@ always @(posedge clk ) begin
                     cs <= 0;
                     busy <= 0;
                     counter <= 0;
-                    sclk <= 0;
+                    sclk <= CPOL;
                     state <= IDLE;
                 end
                 default: 
