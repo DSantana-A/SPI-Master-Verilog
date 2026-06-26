@@ -14,7 +14,7 @@ module tbMSPI ();
 
     always #10 clk = ~clk;
 
-    MSPI #(.N(N), .NumSlaves(NumSlaves)) dut(
+    MSPI #(.N(N), .NumSlaves(NumSlaves), .CPOL(0),.CPHA(0)) dut(
         .miso(miso),
         .clk(clk),
         .reset(reset),

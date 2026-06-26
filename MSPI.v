@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module MSPI #(parameter N =8, parameter NumSlaves = 1, parameter CPOL = 0)(
+module MSPI #(parameter N =8, parameter NumSlaves = 1, parameter CPOL = 0, parameter CPHA = 0)(
     input miso, clk, reset, enable,
     input [N-1:0] data,
     input [$clog2(NumSlaves)-1:0] slave_sel,
@@ -43,7 +43,7 @@ always @(posedge clk ) begin
                 end 
                 TRANSFER: begin
                     sclk <= ~sclk;
-                    if (!sclk) begin
+                    if (sclk == CPHA) begin
                         mosi <= shift_reg[N-1];
                         shift_reg <= {shift_reg[N-2:0], 1'b0};
                     end else begin
